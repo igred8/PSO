@@ -1,8 +1,8 @@
 # ==========
 # Created by Ivan Gadjev
-# 2020.02.01
+# 2020.05.28
 #
-# Library of custom functions that aid in projects using pyRadia, genesis, elegant, and varius other codes and analyses. 
+# Library of custom functions that aid in particle beam physics with a Particle Swarm Optimizer (PSO) class.
 #   
 # 
 # ==========
@@ -28,11 +28,6 @@ xhat = np.array([1,0,0])
 yhat = np.array([0,1,0])
 zhat = np.array([0,0,1])
 origin = np.array([0,0,0])
-
-colordict = {'tblue':[0.12156862745098039, 0.4666666666666667, 0.7058823529411765],
-            'tred':[0.8392156862745098, 0.15294117647058825, 0.1568627450980392],
-            'tgreen':[0.17254901960784313, 0.6274509803921569, 0.17254901960784313],
-            'torange':[1.0, 0.4980392156862745, 0.054901960784313725] }
 
 #
 # ===== helper functions =====
