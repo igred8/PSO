@@ -1,2 +1,6 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 # figures
 pso_flowchart
