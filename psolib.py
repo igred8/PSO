@@ -7,17 +7,9 @@
 # 
 # ==========
 
-import sys
-import os
 import time
-
 import scipy.constants as pc
 import numpy as np
-import pandas as pd
-
-import scipy.signal as sps
-
-import matplotlib.pyplot as plt
 import matplotlib.cm as mcm
 
 #
@@ -283,6 +275,7 @@ class PSO(object):
 
         # init particle best solution
         pbest = 1.0 * xpart
+        # NOTE: Best not to assume the form of obj function input
         cpbest = np.array([ self.cost(function(*xp), target) for xp in pbest ])
         # init global best solutions
         im = np.argmin(cpbest)
@@ -345,4 +338,20 @@ class PSO(object):
 
         return xarr, varr, parr, cparr, garr, cgarr
 
+
+class ImplicitTargetPSO(PSO):
+    """
+    Allow objective functions with builtin or no target requirement
+    Target must still be given but will not be used
+    """
+
+    def cost(self, value, _):
+        """
+        Patching over cost
+        Use when objective function contains target information
+        :param value: Value returned by objective function
+        :param _: Needed for evaluation
+        :return: value
+        """
+        return value
 
