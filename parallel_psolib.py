@@ -6,17 +6,25 @@ import time
 
 class SynchronousParallelPSO(ImplicitTargetPSO):
 
-    def run_pso(self, function, searchspace, target, nparticles, maxiter, precision, domain, verbose=True, pool_size=None):
+    def run_pso(self, function, searchspace, target, nparticles, maxiter, precision, domain,
+                verbose=True, pool_size=None):
 
         """ Performs a PSO for the given function in the searchspace, looking for the target, which is in the output space.
 
+        This is an extremely straightforward parallelization of the PSO algorithm as implemented in psolib. If performs
+        a parallel evaluation of all particles through a multiprocessing pool and then updates the simulation state
+        globally. This is as opposed to the typical algorithm which updates the global state after every particle
+        evaluation. This makes this algorithm less efficient at finding minima. But it is very straightforward
+        programmatically and is included as a comparison and stepping stone to an asynchronous update version.
+
         function - the function to be optimized. Its domain must include the seachspace and its output must be in the space of target.
         searchspace - np.array((ssdim, 2))
-        target - np.array((tdim, ))
+        target - Not used by `ImplicitTargetPSO`. `function` should include any necessary target data.
         nparticles - number of particles to use in the optimization
         maxiter - maximum number of iterations to the optimization routine
         precision - how close to the target to attemp to get
         domain - absolute boundaries on the trial solutions/particles
+        pool_size - (int) set the ProcessingPool size explicitly. Defaults to 4 if not set.
         """
         if not pool_size:
             pool_size = 4#cpu_count()
@@ -110,7 +118,8 @@ class SynchronousParallelPSO(ImplicitTargetPSO):
 
 class AsynchronousParallelPSO(ImplicitTargetPSO):
 
-    def run_pso(self, function, searchspace, target, nparticles, maxiter, precision, domain, verbose=True, pool_size=None):
+    def run_pso(self, function, searchspace, target, nparticles, maxiter, precision, domain,
+                verbose=True, pool_size=None):
 
         """ Performs a PSO for the given function in the searchspace, looking for the target, which is in the output space.
 
@@ -121,11 +130,12 @@ class AsynchronousParallelPSO(ImplicitTargetPSO):
 
         function - the function to be optimized. Its domain must include the seachspace and its output must be in the space of target.
         searchspace - np.array((ssdim, 2))
-        target - np.array((tdim, ))
+        target - Not used by `ImplicitTargetPSO`. `function` should include any necessary target data.
         nparticles - number of particles to use in the optimization
         maxiter - maximum number of iterations to the optimization routine
         precision - how close to the target to attemp to get
         domain - absolute boundaries on the trial solutions/particles
+        pool_size - (int) set the ProcessingPool size explicitly. Defaults to 4 if not set.
         """
         if not pool_size:
             pool_size = 4#cpu_count()
@@ -221,9 +231,8 @@ class AsynchronousParallelPSO(ImplicitTargetPSO):
                     evalnum += 1
 
             current_iternum = evalnum // nparticles
-            print(current_iternum, evalnum, cgbest)
 
-            if current_iternum > iternum:
+            if (current_iternum > iternum) or (cgbest < precision):
 
                 xarr = np.concatenate((xarr, xpart[:, :, None]), axis=2)
                 varr = np.concatenate((varr, vpart[:, :, None]), axis=2)
