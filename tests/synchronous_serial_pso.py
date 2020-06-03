@@ -70,7 +70,7 @@ def summarize(results, run_settings, func_name):
         print("{:.2f} were successful. Standard Dev of best results: {:.3f}".format(fraction, std))
         runtime = np.sum(result[:, 2])
         avg_runtime = np.average(result[:, 2])
-        print("Total run time: {:.1f}. Average run time: {:.1f".format(runtime, avg_runtime))
+        print("Total run time: {:.1f}. Average run time: {:.1f}".format(runtime, avg_runtime))
 
 
 results = rastrigin_runner()
