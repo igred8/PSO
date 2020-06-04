@@ -27,7 +27,7 @@ class SynchronousParallelPSO(ImplicitTargetPSO):
         pool_size - (int) set the ProcessingPool size explicitly. Defaults to 4 if not set.
         """
         if not pool_size:
-            pool_size = 4#cpu_count()
+            pool_size = 4
 
         # update attributes
         self.maxiter = maxiter
@@ -138,7 +138,7 @@ class AsynchronousParallelPSO(ImplicitTargetPSO):
         pool_size - (int) set the ProcessingPool size explicitly. Defaults to 4 if not set.
         """
         if not pool_size:
-            pool_size = 4#cpu_count()
+            pool_size = 4
 
         # update attributes
         self.maxiter = maxiter

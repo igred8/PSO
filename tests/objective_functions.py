@@ -24,7 +24,15 @@ def rastrigin_function(*args):
         result += element**2 - 10 * np.cos(2 * np.pi * element)
     return result
 
-from pathos.multiprocessing import Pool, cpu_count
-
-pool = Pool(4)
-x = np.random.random([10, 2])
+def ackley_path_function(*args):
+    # takes k-dimensional vector
+    # continuous, multi-model
+    # global minimum: x_i = 0 
+    # rescale onto [-32, 32]
+    vector = np.array(args).squeeze()
+    a = 20.
+    b = 0.2
+    c = np.pi
+    n = float(len(vector))
+    result = - a * np.exp( - b * np.sqrt(np.sum(vector**2) / n ) ) - np.exp( np.sum(np.cos(c * vector)) / n ) + a + np.exp(1.)
+    return result
